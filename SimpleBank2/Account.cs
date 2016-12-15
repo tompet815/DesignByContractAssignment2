@@ -11,13 +11,17 @@ namespace SimpleBank2
     {
         public string Number { get; set; }
         public double Balance { get; set; }
-        public List<Movement> Movements { get; set; }
+       
+        public List<Movement> Debits { get; set; }
+        public List<Movement> Credits { get; set; }
+       
         [ContractInvariantMethod]
         private void InvariantMethod()
         {
-            Contract.Invariant(Balance >= 0);
+            Contract.Invariant(Balance >= 0);            
+
         }
     }
 
-    
+
 }

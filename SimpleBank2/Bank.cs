@@ -25,27 +25,29 @@ namespace SimpleBank2
             Contract.Requires(amount > 0);
             Contract.EnsuresOnThrow<MoneyException>(Contract.OldValue<double>(target.Balance) == target.Balance &&
             Contract.OldValue<double>(source.Balance) == source.Balance);
-            Contract.Ensures((Contract.OldValue<double>(source.Balance) - source.Balance) + (Contract.OldValue<double>(target.Balance) - target.Balance) == 0);
-
+            Contract.Ensures(Customers.Sum(c => c.Accounts.Sum(a => a.Credits.Sum(ac => ac.Amount))) - Customers.Sum(c => c.Accounts.Sum(a => a.Debits.Sum(ac => ac.Amount))) == 0);
+      
             if (target == null || source == null)
             {
                 throw new MoneyException("account is null");
             }
-
             source.Balance -= amount;
             target.Balance += amount;
+            var newMovement = new Movement(amount);
+            source.Credits.Add(newMovement);
+            target.Debits.Add(newMovement);
 
-            var newMovement = new Movement(amount, source, target);
-            source.Movements.Add(newMovement);
-            target.Movements.Add(newMovement);
 
         }
         public List<Movement> MakeStatement(Customer customer, string account)
         {
-            var movements = Customers.Find(x => x.Id.Equals(customer.Id)).Accounts
-                .Find(x => x.Number.Equals(account)).Movements;
-            return movements.OrderBy(x => x.Date).ToList();
-
+            
+            var credits = Customers.Find(x => x.Id.Equals(customer.Id)).Accounts
+                .Find(x => x.Number.Equals(account)).Credits;
+            var debits = Customers.Find(x => x.Id.Equals(customer.Id)).Accounts
+            .Find(x => x.Number.Equals(account)).Debits;
+            credits.AddRange(debits);
+            return credits;
         }
        
     }

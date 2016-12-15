@@ -11,8 +11,9 @@ namespace SimpleBank2
         static void Main(string[] args)
         {
             Bank bank = new SimpleBank2.Bank("testBank");
-            Account a1 = new Account() { Number = "12345", Balance =100, Movements = new List<Movement>() };
-            Account a2 = new Account() { Number = "54321", Balance = 200, Movements = new List<Movement>() };
+
+            Account a1 = new Account() { Number = "12345", Balance = 100, Credits = new List<Movement>(), Debits = new List<Movement>() };
+            Account a2 = new Account() { Number = "54321", Credits = new List<Movement>(), Debits = new List<Movement>() };
             List<Account> as1 = new List<Account>();
             as1.Add(a1);
             List<Account> as2 = new List<Account>();
@@ -25,8 +26,8 @@ namespace SimpleBank2
             Console.WriteLine(a1.Balance);
             Console.WriteLine(a2.Balance);
 
-            //Breaking contract...
-            //bank.Move(100, a1, a2);
+            
+            //bank.Move(100, a1, a2);// Breaking contract
             //Console.WriteLine(a1.Balance);
             //Console.WriteLine(a2.Balance);
             Console.ReadLine();
