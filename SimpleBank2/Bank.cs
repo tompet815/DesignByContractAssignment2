@@ -31,8 +31,7 @@ namespace SimpleBank2
             {
                 throw new MoneyException("account is null");
             }
-            source.Balance -= amount;
-            target.Balance += amount;
+
             var newMovement = new Movement(amount);
             source.Credits.Add(newMovement);
             target.Debits.Add(newMovement);
