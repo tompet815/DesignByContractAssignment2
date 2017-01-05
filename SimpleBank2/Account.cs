@@ -15,9 +15,16 @@ namespace SimpleBank2
         {
             get
             {
+                Contract.Ensures(Credits != null);
+                Contract.Ensures(Debits != null);
+                Contract.Ensures(Balance >= 0);
                 return balance + Debits.Sum(d => d.Amount) - Credits.Sum(c => c.Amount);
             }
-            set { balance = value; }
+            set {
+                Contract.Requires(value > 0);
+                Contract.Ensures(Balance >= 0);
+                balance = value;
+            }
         }
 
         public List<Movement> Debits { get; set; }

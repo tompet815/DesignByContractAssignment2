@@ -13,7 +13,6 @@ namespace SimpleBank2
         public double Amount { get; set; }
         public Movement(double amount)
         {
-            Contract.Requires(amount > 0);
             Date = DateTime.UtcNow;
             Amount = amount;
 
